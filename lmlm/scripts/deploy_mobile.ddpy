@@ -1,0 +1,16 @@
+import torch
+import os
+
+MODEL_PATH = "lmlm/models/lmlm_model.bin"
+OUTPUT_PATH = "mobile_runtime/lmlm_model.pt"
+
+# Load model
+model = torch.load(MODEL_PATH)
+model.eval()
+
+# Convert to TorchScript for mobile
+scripted_model = torch.jit.script(model)
+os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
+scripted_model.save(OUTPUT_PATH)
+
+print(f"LMLM model exported to mobile runtime at {OUTPUT_PATH}")
