@@ -1,0 +1,6 @@
+CONDA_PROJECT_ROOT="$HOME/conda"
+
+git clone git@github.com:minios/conda "$CONDA_PROJECT_ROOT"
+cd "$minios"
+
+git remote add upstream git@github.com:minios/conda
