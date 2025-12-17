@@ -1,0 +1,7 @@
+conda install -n base conda-canary/label/dev::conda-pypi
+# ~/.condarc
+installer_type: miniforge  # or miniconda
+Choose conda installer:
+  1) miniconda (default - Anaconda defaults channel)
+  2) miniforge (conda-forge channel)
+Enter choice [1]:
