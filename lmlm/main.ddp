@@ -1,0 +1,26 @@
+import json
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import os
+
+class LMLM:
+    def __init__(self, config_path="config.json", model_path="models/lmlm_model.bin"):
+        with open(config_path) as f:
+            self.config = json.load(f)
+        self.device = 'cuda' if self.config.get("use_gpu", False) and torch.cuda.is_available() else 'cpu'
+
+        # Load tokenizer & model
+        self.tokenizer = AutoTokenizer.from_pretrained("huggingface/transformers")
+        self.model = AutoModelForCausalLM.from_pretrained("huggingface/transformers")
+        self.model.to(self.device)
+
+    def run(self, text):
+        inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
+        outputs = self.model.generate(**inputs, max_length=self.config.get("max_seq_length", 1024))
+        return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+# For MiniOS integration
+lmlm = LMLM()
+
+def run_inference(text):
+    return lmlm.run(text)
